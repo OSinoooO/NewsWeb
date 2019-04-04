@@ -7,17 +7,22 @@ from flask import Flask
 from config import config
 
 
-app = Flask(__name__)
-app.config.from_object(config['development'])
+# 初始化mysql对象,可在之后用init_app导入app对象
+db = SQLAlchemy()
 
-# 初始化mysql对象
-db = SQLAlchemy(app)
 
-# 初始化redis对象
-redis_store = StrictRedis(host=config['development'].REDIS_HOST, port=config['development'].REDIS_PORT)
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    db.init_app(app)
 
-# 开启CSRF防护
-CSRFProtect(app)
+    # 初始化redis对象
+    redis_store = StrictRedis(host=config[config_name].REDIS_HOST, port=config[config_name].REDIS_PORT)
 
-# 初始化session对象
-Session(app)
+    # 开启CSRF防护
+    CSRFProtect(app)
+
+    # 初始化session对象
+    Session(app)
+
+    return app
