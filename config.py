@@ -4,8 +4,6 @@ from redis import StrictRedis
 
 class Config(object):
     """项目配置"""
-    DEBUG = True
-
     SECRET_KEY = '2UKGQoGlL3qo16EHBoHmgVoWEULUMp+4lUp7vUjQ2mqJIPWI6u+yiT4pYlFlQAHi'
 
     # mysql配置
@@ -27,3 +25,26 @@ class Config(object):
     SESSION_PERMANENT = False
     # 设置过期时间
     PERMANENT_SESSION_LIFETIME = 86400 * 2
+
+
+class DevelopmentConfig(Config):
+    """开发环境下的配置"""
+    DEBUG = True
+
+
+class ProductionConfig(Config):
+    """生产环境下的配置"""
+    DEBUG = False
+
+
+class TestingConfig(Config):
+    """单元测试环境下的配置"""
+    DEBUG = True
+    TESTING = True
+
+
+config = {
+    'development': DevelopmentConfig,
+    'production': ProductionConfig,
+    'testing': TestingConfig
+}
