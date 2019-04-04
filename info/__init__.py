@@ -7,6 +7,7 @@ from flask_session import Session
 from flask import Flask
 from config import config
 import logging
+from info.modules.index import index_blu
 
 
 # 初始化mysql对象,可在之后用init_app导入app对象
@@ -37,5 +38,8 @@ def create_app(config_name):
 
     # 初始化session对象
     Session(app)
+
+    # 注册蓝图
+    app.register_blueprint(index_blu)
 
     return app
