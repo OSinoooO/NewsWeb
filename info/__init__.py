@@ -7,8 +7,8 @@ from flask_session import Session
 from flask import Flask
 from config import config
 import logging
-from info.modules.index import index_blu
 
+redis_store = None  # type: StrictRedis
 
 # 初始化mysql对象,可在之后用init_app导入app对象
 db = SQLAlchemy()
@@ -31,6 +31,7 @@ def create_app(config_name):
     db.init_app(app)
 
     # 初始化redis对象
+    global redis_store
     redis_store = StrictRedis(host=config[config_name].REDIS_HOST, port=config[config_name].REDIS_PORT)
 
     # 开启CSRF防护
@@ -40,6 +41,7 @@ def create_app(config_name):
     Session(app)
 
     # 注册蓝图
+    from info.modules.index import index_blu
     app.register_blueprint(index_blu)
 
     return app
