@@ -30,17 +30,20 @@ class Config(object):
 class DevelopmentConfig(Config):
     """开发环境下的配置"""
     DEBUG = True
+    LOG_LEVEL = 'DEBUG'
 
 
 class ProductionConfig(Config):
     """生产环境下的配置"""
     DEBUG = False
+    LOG_LEVEL = 'WARNING'
 
 
 class TestingConfig(Config):
     """单元测试环境下的配置"""
     DEBUG = True
     TESTING = True
+    LOG_LEVEL = 'DEBUG'
 
 
 config = {
